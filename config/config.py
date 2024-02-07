@@ -33,6 +33,9 @@ class Settings():
         }
     ]
     
+    SECRET_KEY = "ezzyscissorbdbc97f82bfe593d1e45cec19ad2591af315096665512564df9af"
+    ALGORITHM = "HS256"
+    
     class Config:
         """Load env variables from .env file."""
         env_file = ".env"

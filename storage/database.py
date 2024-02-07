@@ -1,7 +1,10 @@
 """Deal with the Database connection."""
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
+from typing import Annotated
+from fastapi import Depends
+
 
 from config.config import get_settings
 
@@ -27,3 +30,5 @@ def get_db():
         yield db
     finally:
         db.close()
+
+db_session = Annotated[Session, Depends(get_db)]
