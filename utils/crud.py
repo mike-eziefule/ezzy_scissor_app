@@ -15,7 +15,7 @@ base_url = URL(get_settings().base_url)
 
 
 
-def create_and_save_url(db, url:url.URLBase, user_id) -> url.URL:
+def create_and_save_url(db, url, user_id) -> url.URL:
     """Create URL in the Database."""
     #variables
     key = keygen.create_unique_random_key(db)
@@ -23,7 +23,7 @@ def create_and_save_url(db, url:url.URLBase, user_id) -> url.URL:
 
     #database dump
     db_url = model.URL(
-        target_url= url.target_url,
+        target_url= url,
         key= key,
         private_key= secret_key,
         # qr_url= None,
@@ -46,8 +46,14 @@ def get_url_by_key(url_key:str, db:Session) -> model.URL:
         .first()
     )
     
-    
-    
+def update_db_clicks(db: Session, db_url: model.URL) -> model.URL:
+    """Update the count of times the link has been visited."""
+    db_url.clicks += 1
+    db.commit()
+    db.refresh(db_url)
+    return db_url    
+
+
 def make_qrcode(url_key):
     
     shorturl = str(base_url.replace(path = url_key))
@@ -59,5 +65,3 @@ def make_qrcode(url_key):
     )
     
     return (img_path+url_key+'.png')
-    # save qr_image location on db
-    img_location = str(img_path + url_key + ".png")
