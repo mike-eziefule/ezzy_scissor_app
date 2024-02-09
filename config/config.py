@@ -7,7 +7,7 @@ class Settings():
     """Default BaseSettings."""
 
     env_name: str = "Local"
-    base_url: str = "http://localhost:8000"
+    base_url: str = "http://localhost:8000/"
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # Postgreqsl specific
@@ -46,7 +46,7 @@ def get_settings() -> Settings:
     """Return the current settings."""
     settings = Settings()
     if settings.db_backend == "postgresql":
-        settings.db_url: str = (
+        settings.db_url = str(
             f"postgresql://{settings.db_user}:{settings.db_pw}"
             f"@{settings.db_address}:{settings.db_port}/{settings.db_name}"
         )

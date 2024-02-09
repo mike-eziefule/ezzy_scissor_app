@@ -1,0 +1,63 @@
+"""CRUD operations."""
+
+from config.config import get_settings
+from starlette.datastructures import URL
+from schema import url
+from utils import keygen, qrcode
+from storage import model
+from sqlalchemy.orm import Session
+from datetime import datetime
+# from utils.qrcode import qr_image
+
+
+img_path = "static/images/qr_images/"
+base_url = URL(get_settings().base_url)
+
+
+
+def create_and_save_url(db, url:url.URLBase, user_id) -> url.URL:
+    """Create URL in the Database."""
+    #variables
+    key = keygen.create_unique_random_key(db)
+    secret_key = f"{key}_{keygen.create_random_key(length=8)}"
+
+    #database dump
+    db_url = model.URL(
+        target_url= url.target_url,
+        key= key,
+        private_key= secret_key,
+        # qr_url= None,
+        date_created = datetime.now().date(), 
+        owner_id = user_id
+    )
+    db.add(db_url)
+    db.commit()
+    db.refresh(db_url)
+
+    return db_url
+
+
+#function 2
+def get_url_by_key(url_key:str, db:Session) -> model.URL:
+    """Return a URL by specified key."""
+    return (
+        db.query(model.URL)
+        .filter(model.URL.key == url_key, model.URL.is_active == True)
+        .first()
+    )
+    
+    
+    
+def make_qrcode(url_key):
+    
+    shorturl = str(base_url.replace(path = url_key))
+    # Create qr_code
+    qrcode.qr_image().url_to_qr(
+        url=shorturl, 
+        img_path=img_path, 
+        url_key=url_key
+    )
+    
+    return (img_path+url_key+'.png')
+    # save qr_image location on db
+    img_location = str(img_path + url_key + ".png")

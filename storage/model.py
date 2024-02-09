@@ -25,6 +25,5 @@ class URL(Base):
     is_active = Column(Boolean, default=True)
     date_created = Column(Date, nullable= False)
     qr_url = Column(String, nullable= True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
-    
+    owner_id = Column(Integer, ForeignKey("users.id"), default=0)
     owner = relationship("USER", back_populates = "urls")

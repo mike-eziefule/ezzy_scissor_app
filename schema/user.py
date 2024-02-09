@@ -11,6 +11,9 @@ class UserLogin(BaseUser):
 class UserCreate(UserLogin):
     password: str
     
+class editUser(BaseModel):
+    username: str
+    
 class ShowUser(UserLogin):
     id : int
     
