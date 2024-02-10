@@ -5,6 +5,8 @@ from router import auth, url, user
 from storage.model import Base
 from config.config import get_settings
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.templating import Jinja2Templates
+from starlette.staticfiles import StaticFiles
 
 
 app = FastAPI(
@@ -14,8 +16,16 @@ app = FastAPI(
     openapi_tags= get_settings().tags
 )
 
+#HTML Dependencies
+templates = Jinja2Templates(directory="templates")
+
+#CSS/JS Dependencies
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
 Base.metadata.create_all(bind=engine)
 
+#CORS middleware restrictions
 origins = ["*"]
 
 app.add_middleware(
@@ -26,6 +36,7 @@ app.add_middleware(
     allow_headers = ["*"]
 )
 
+# Include the router
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(url.router)

@@ -1,0 +1,44 @@
+{% include 'layout.html' %}
+
+{% block title%}
+    <title> Ezzy Scissor App </title>
+{% endblock%}
+
+<div class="container">
+    <div class="card text-center">
+        <div class="card-body">
+            Ezzy Scissor App
+        </div>
+        <div>
+            <h5 class="card-title">List of your Todos!</h5>
+            <p class="card-text">Information regarding stuff that needs to be done.</p>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Key</th>
+                        <th scope="col">Target Url</th>
+                        <th scope="col">Clicks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for url in urls %}
+                    <tr class="pointer">
+                        <td>1</td>
+                        <td>{{url.key}}</td>
+                        <td>{{url.target_url}}</td>
+                        <td>{{url.clicks}}</td>
+                        <td>
+                            <button type="button" class="btn btn-success">Download</button>
+                            <button type="button" class="btn btn-info">Edit</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+            <a href="#" class="btn btn-primary">Create Url</a>
+        </div>
+    </div>
+</div>
+

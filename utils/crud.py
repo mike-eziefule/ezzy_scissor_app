@@ -46,6 +46,7 @@ def get_url_by_key(url_key:str, db:Session) -> model.URL:
         .first()
     )
     
+
 def update_db_clicks(db: Session, db_url: model.URL) -> model.URL:
     """Update the count of times the link has been visited."""
     db_url.clicks += 1
