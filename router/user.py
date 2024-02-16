@@ -2,7 +2,6 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
 from schema import user
 from storage import database
 from storage import model
@@ -10,13 +9,12 @@ from utils.service import bcrpyt_context, get_user_from_token
 from router.auth import oauth2_scheme
 
 
-
 router = APIRouter(prefix="/user", tags=["user"])
 
 #NEW USER REGISTRATION
 @router.post('/sign-up', response_model = user.ShowUser)
 async def register(new_user:user.UserCreate, db:Session=Depends(database.get_db)):
-
+    
     scan = db.query(model.USER).filter(model.USER.email == new_user.email)
     if scan.first():
         raise HTTPException(
