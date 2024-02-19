@@ -1,7 +1,7 @@
 """Main FastAPI App."""
 from fastapi import FastAPI
 from storage.database import engine
-from router import auth, url, user
+from router import auth, url, user, webpage
 from storage.model import Base
 from config.config import get_settings
 from fastapi.middleware.cors import CORSMiddleware
@@ -40,3 +40,4 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(url.router)
+app.include_router(webpage.router)

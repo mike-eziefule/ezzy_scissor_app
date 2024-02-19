@@ -67,10 +67,6 @@ body{
     height: auto;
 }
 
-/* background-image: url(../media/Rectangle.png);
-background-position: center;
-background-size: 100px auto; */
-
 .HeroSection{
     display: grid;
     height: auto;
@@ -219,7 +215,7 @@ background-size: 100px auto; */
     margin: auto 5px; 
 }
 .logo .logo-icon img{
-    padding-top: 0px;
+    padding-top: 8px;
 }
 .logo .Logo-text span{
     color: var(--text-Primary-300);
@@ -317,14 +313,14 @@ button{
 
 .whyscissors{
     margin: auto;
-    padding: 100px 0;
+    padding: 100px 10px;
     display: flex;
     justify-content: space-between;
 }
 
 .intro{
     height: 50%;
-    padding: 0px;
+    margin: 0px;
     display: grid;
     justify-content: space-around;
     width: 40%;
@@ -351,6 +347,7 @@ button{
     grid-template-columns: 1fr;
 }
 .topwidget{
+    padding : 10px;
     display: flex;
     margin-bottom: 25px;
 }
@@ -362,7 +359,7 @@ button{
     /* padding: 5px 20px; */
     padding-bottom: 20px;
     padding-top: 0;
-    padding-right: 10px;
+    padding-right: 15px;
 }
 .icon{
     height: 56px;
@@ -395,14 +392,13 @@ button{
 }
 
 .form{
-    width: 100%;
+    width: 40%;
     height: auto;
     background-color: var(--bg-black-300);
     margin:0 auto;
     padding: 25px;
     border-radius: 12px;
 }
-
 .input{
     margin: 15px auto;
 }
@@ -415,18 +411,16 @@ button{
 #URL{
     margin-bottom: 10px;
     padding-left: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     width: 100%;
     height: 45px;
     border: 1px solid var(--text-Primary-400);
 }
-
 .flex{
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
-
 #domain,#Alias{
     padding-left: 20px;
     width: 100%;

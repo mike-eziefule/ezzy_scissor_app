@@ -29,7 +29,15 @@ async def read_all_by_user(
 ):
     """View URL."""
     urls = db.query(model.URL).all()
-    return templates.TemplateResponse("register.html", {"request": request, "urls": urls})
+    return templates.TemplateResponse("index.html", {"request": request, "urls": urls})
+
+#VIEW URL BY KEY
+@router.get("/faq", response_class = HTMLResponse)
+async def read_all_by_user(
+    request:Request
+):
+    return templates.TemplateResponse("faq.html", {"request": request})
+
 
 #create_url ROUTE
 @router.post("/create_short_url", response_model=url.URLListItem)

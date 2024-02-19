@@ -7,7 +7,8 @@ class USER(Base):
     __tablename__ = 'users'
     
     id = Column(Integer, primary_key=True, index = True)
-    username = Column(String, nullable= False)
+    firstname = Column(String, nullable= False)
+    lastname = Column(String, nullable= False)
     email = Column(String, nullable= False, unique=True)
     password = Column(String, nullable= False, index= True)    
     
@@ -20,7 +21,6 @@ class URL(Base):
     id = Column(Integer, primary_key=True, index = True)
     target_url = Column(String, nullable= False)
     key = Column(String, nullable= False, unique=True)
-    private_key = Column(String, nullable= False, unique=True)
     clicks = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
     date_created = Column(Date, nullable= False)

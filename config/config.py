@@ -30,6 +30,9 @@ class Settings():
         },
         {'name': 'url',
         'description': 'Routes related to URL adding and listing'
+        },
+        {'name': 'pages',
+        'description': 'Routes related to browsing web pages'
         }
     ]
     

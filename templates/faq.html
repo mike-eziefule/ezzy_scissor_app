@@ -1,128 +1,193 @@
-<div class="FAQs">
-    <div class="frame1653">
-        <div class="frame1652">
-        <h1><img src = "{{url_for('static', path='/media/Line70.svg')}}" /> FAQS</h1>
-        </div>
-        <div class="frame1651">
-        <div class="plus">
-            <div class="plus_question">
-            <h4>How do URL shortening work?</h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />
+{% include 'layout.html' %} {% block title%}
+<title>Sign in | ezzy scissor</title>
+{% endblock%}
+<div class="card-body"></div>
+<div class="card-body"></div>
+
+<div class="container">
+    <div class="FAQs">
+        <div class="frame1653">
+            <div class="frame1652">
+                <h1>
+                    <img
+                        src="{{url_for('static', path='/media/Line70.svg')}}"
+                    />
+                    FAQS
+                </h1>
             </div>
-            <div class="plus_answer">
-            <h5>
-                URL shortener works by taking a long URL and creating a shorter,
-                condensed version that directs to the original URL. when a user
-                clicks on the link, they are redirected to the intended destination.
-            </h5>
+            <div class="frame1651">
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>How do URL shortening work?</h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            URL shortener works by taking a long URL and
+                            creating a shorter, condensed version that directs
+                            to the original URL. when a user clicks on the link,
+                            they are redirected to the intended destination.
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>
+                            Is it necessary to create an account to use the URL
+                            shortening service?
+                        </h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem ipsum dolor sit amet consectetur, adipisicing
+                            elit. Deleniti impedit accusantium dignissimos et
+                            commodi libero natus neque voluptates earum?
+                            Laudantium, asperiores assumenda laboriosam dolor in
+                            molestias, vitae suscipit accusamus omnis quam
+                            ratione.
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>
+                            Are the shortened links permanent? Will they expire?
+                        </h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing
+                            elit. Quas accusamus vero repellendus sunt. Numquam
+                            minus magnam iure necessitatibus voluptas inventore
+                            ullam, ex voluptatibus corrupti?
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>
+                            Are there any limitations on the number of URLs I
+                            can shorten?
+                        </h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Maxime placeat ea dolore omnis cumque ratione!
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>
+                            Can I customize the shortened URLs to reflect my
+                            brand or content?
+                        </h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Quas accusantium consectetur consequuntur
+                            voluptatum laudantium itaque ducimus dignissimos
+                            provident quam iusto.
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>
+                            Can I track the performance of my shortened URLs?
+                        </h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing
+                            elit. Magnam neque recusandae cupiditate rem
+                            laudantium delectus sunt, culpa distinctio iure
+                            quasi unde porro hic. Magnam, quia.
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>
+                            How secure is the URL shortening service? Are the
+                            shortened links protected against spam or malicious
+                            activity?
+                        </h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing
+                            elit. Nisi excepturi perferendis facilis
+                            reprehenderit mollitia voluptates expedita maiores.
+                            Natus deleniti unde, cupiditate possimus voluptate
+                            reprehenderit similique ex laboriosam odio at
+                            tempore?
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>What is a QR code and what can it do?</h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing
+                            elit. Repudiandae distinctio veritatis molestiae
+                            repellendus aspernatur numquam voluptas officiis
+                            dolore.
+                        </h5>
+                    </div>
+                </div>
+                <div class="plus">
+                    <div class="plus_question">
+                        <h4>
+                            Is there an API available for integrating the URL
+                            shortening service into my own applications or
+                            websites?
+                        </h4>
+                        <img
+                            src="{{url_for('static', path='/media/plus (1).svg')}}"
+                        />
+                    </div>
+                    <div class="plus_answer">
+                        <h5>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit.
+                        </h5>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>
-                Is it necessary to create an account to use the URL shortening
-                service?
-            </h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
-                impedit accusantium dignissimos et commodi libero natus neque
-                voluptates earum? Laudantium, asperiores assumenda laboriosam dolor
-                in molestias, vitae suscipit accusamus omnis quam ratione.
-            </h5>
-            </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>Are the shortened links permanent? Will they expire?</h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas
-                accusamus vero repellendus sunt. Numquam minus magnam iure
-                necessitatibus voluptas inventore ullam, ex voluptatibus corrupti?
-            </h5>
-            </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>
-                Are there any limitations on the number of URLs I can shorten?
-            </h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-                placeat ea dolore omnis cumque ratione!
-            </h5>
-            </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>
-                Can I customize the shortened URLs to reflect my brand or content?
-            </h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                accusantium consectetur consequuntur voluptatum laudantium itaque
-                ducimus dignissimos provident quam iusto.
-            </h5>
-            </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>Can I track the performance of my shortened URLs?</h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam
-                neque recusandae cupiditate rem laudantium delectus sunt, culpa
-                distinctio iure quasi unde porro hic. Magnam, quia.
-            </h5>
-            </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>
-                How secure is the URL shortening service? Are the shortened links
-                protected against spam or malicious activity?
-            </h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi
-                excepturi perferendis facilis reprehenderit mollitia voluptates
-                expedita maiores. Natus deleniti unde, cupiditate possimus voluptate
-                reprehenderit similique ex laboriosam odio at tempore?
-            </h5>
-            </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>What is a QR code and what can it do?</h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Repudiandae distinctio veritatis molestiae repellendus aspernatur
-                numquam voluptas officiis dolore.
-            </h5>
-            </div>
-        </div>
-        <div class="plus">
-            <div class="plus_question">
-            <h4>
-                Is there an API available for integrating the URL shortening service
-                into my own applications or websites?
-            </h4>
-            <img src = "{{url_for('static', path='/media/plus (1).svg')}}" />            </div>
-            <div class="plus_answer">
-            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
-            </div>
-        </div>
         </div>
     </div>
 </div>
+
+
+<div class="card-body"></div>
+<div class="whyscissors"></div>
+
+{% include 'footnote.html' %}
