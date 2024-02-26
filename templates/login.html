@@ -16,7 +16,8 @@
         {% else %}
         <div class="alert alert-danger" role="alert">{{ msg }}</div>
         {% endif %} {% endif %}
-        <form method="POST" action="/auth">
+
+        <form method="POST" action="/auth/">
             <div class="form-group">
                 <label>Email</label>
                 <input
@@ -41,7 +42,7 @@
         </form>
     </div>
     <div class="card-footer text-muted">
-        <a href="register">Register?</a>
+        <a href="{{url_for('register')}}">Register?</a>
     </div>
 </div>
 

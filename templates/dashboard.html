@@ -1,0 +1,73 @@
+{% include 'layout.html' %} {% block title%}
+<title>Ezzy | new</title>
+{% endblock%}
+
+<div class="container">
+    <div class="card-body text-monospace"></div>
+    <div class="card-body text-monospace">message here</div>
+    <div class="card-body">
+        <h2>Hello, Name</h2>
+    </div>
+    
+    <div class="card-body text-center">
+        <div class="card-body"><h2>Welcome to your Dashboard</h2></div>
+        <h5 class="card-title"><i>Get custom links and a complimentary domain.</i></h5>
+        <p class="card-text text-monospace">
+            Information regarding stuff that needs to be done.
+        </p>
+    </div>
+
+    <div class="card-body"></div>
+    <button
+        onclick="window.location.href='create_url'"
+        type="button"
+        class="btn btn-success text-monospace"
+    >
+        Create New  
+    </button>
+    <div class="card-body"></div>
+
+    <div class="card">
+        <div class="card-body">
+            
+            <div class="navbar">
+                <div class="">
+                    <h2>Zety Resume</h2>
+                    <h4 style ="color:#007bff">https://bit.ly/ezzyurl</h4>
+                    <h5>https://zety.com/?utm_source=google&utm_medium=&utm_campaign=16701418</h5>
+                </div>
+                <div class=""><img src="../static/images/qr_images/1ZOAb.png" width="150" height="150"> </div>
+            </div>
+            <hr class="orb-divider"></hr>
+            <div class="">
+                <button
+                    onclick="window.location.href='edit_url'"
+                    type="button"
+                    class="btn btn-success"
+                >
+                    Customize URL
+                </button>
+                <button
+                    onclick="window.location.href='edit-todo/'"
+                    type="button"
+                    class="btn btn-info"
+                >
+                    Delete URL
+                </button>
+            
+                <a href="add-todo" class="btn btn-primary">Download QR</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body"></div>
+    <hr class="orb-divider"></hr>
+    <hr class="orb-divider"></hr>
+    <div class=""><h4>you've reached the end of this page</h4></div>
+    
+</div>
+
+<div class="card-body"></div>
+<div class="whyscissors"></div>
+
+{% include 'footnote.html' %}

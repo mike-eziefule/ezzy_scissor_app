@@ -717,3 +717,12 @@ button{
     margin: 0;
     text-align: right;
 }
+
+.table_1 {
+    display: flex;
+}
+
+.thead_1 tr, .tbody_1 tr {
+    display: inline-flex;
+    flex-direction: column;
+}

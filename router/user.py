@@ -11,14 +11,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 
-
-
 router = APIRouter(prefix="/user", tags=["user"])
+
 templates = Jinja2Templates(directory="templates")
 
-
-
-#GET NEW USER REGISTRATION
+#register page route
 @router.get("/sign-up", response_class=HTMLResponse)
 async def register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
@@ -27,7 +24,7 @@ async def register(request: Request):
 @router.post('/sign-up', response_class=HTMLResponse)
 async def register(
     request: Request, 
-    email: str = Form(...), 
+    email: str = Form(...),
     firstname: str = Form(...), 
     lastname: str = Form(...), 
     password: str = Form(...), 
@@ -45,7 +42,6 @@ async def register(
         msg = "Passwords do not match"
         return templates.TemplateResponse("register.html", {"request": request, "msg": msg})
     
-    
     new_user = model.USER(
         firstname = firstname,
         lastname = lastname,
@@ -60,24 +56,24 @@ async def register(
     return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
     
 
-#EDITING USER INFORMATION BY User ONLY
-@router.put("/edit_user")
-async def edit_username(username, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
+# #EDITING USER INFORMATION BY User ONLY
+# @router.put("/edit_user")
+# async def edit_username(username, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
     
-    # authentication
-    user = get_user_from_token(db, token)
+#     # authentication
+#     user = get_user_from_token(db, token)
     
-    #Authorazation
-    scan_db = db.query(model.USER).filter(model.USER.email == user.email)
-    if not scan_db.first():
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, 
-            detail="UNAUTHORIZED USER"
-        )
+#     #Authorazation
+#     scan_db = db.query(model.USER).filter(model.USER.email == user.email)
+#     if not scan_db.first():
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED, 
+#             detail="UNAUTHORIZED USER"
+#         )
     
-    scan_db.update({model.USER.username:username})
-    db.commit()
-    raise HTTPException(
-            status_code=status.HTTP_202_ACCEPTED, 
-            detail='Information updated successfully'
-        )
+#     scan_db.update({model.USER.username:username})
+#     db.commit()
+#     raise HTTPException(
+#             status_code=status.HTTP_202_ACCEPTED, 
+#             detail='Information updated successfully'
+#         )

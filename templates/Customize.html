@@ -1,0 +1,54 @@
+{% include 'layout.html' %} {% block title%}
+<title>Ezzy | new</title>
+{% endblock%}
+
+<div class="container">
+    <div class="card-body text-monospace"></div>
+    <div class="card-body text-monospace">message here</div>
+    <div class="card-body">
+        <h2>Customize Url</h2>
+    </div>
+    <div class="card-body"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                you can choose Preferred key
+            </div>
+            <div class=card-body>
+                <form>
+                    <div class="form-group">
+                        <label>URL Key</label>
+                        <input class="form-control" name="key" placeholder= "input URL Key ie. K1By4" required></input>
+                    </div>
+                    <div class="form-group">
+                        <label>Title (optional) </label>
+                        <input type="text" class="form-control" id="title" placeholder= "Name your URL">
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Key </label>
+                        <input type="text" class="form-control" id="title" placeholder= "input your customized key ie OBO1">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Customize</button>
+                    <button
+                        onclick="window.location.href='dashboard'"
+                        type="button"
+                        class="btn btn-success"
+                    >
+                        Dashboard
+                    </button>
+                </form>
+            </div>
+        </div>
+        <hr class="orb-divider"></hr>
+        <hr class="orb-divider"></hr>
+        <hr class="orb-divider"></hr>
+        <div class=""><h4>you've reached the end of this page</h4></div>
+    </div>
+</div>
+
+<div class="card-body"></div>
+<div class="whyscissors"></div>
+
+{% include 'footnote.html' %}

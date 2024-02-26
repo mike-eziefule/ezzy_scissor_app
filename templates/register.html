@@ -20,8 +20,8 @@
                     {{ msg }}
                 </div>
             {% endif %}
-            
-            <form method="POST", action="/user/sign-up">
+
+            <form method="POST", action="{{url_for('register')}}">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label>First Name</label>
@@ -49,7 +49,7 @@
             </form>
         </div>
         <div class="card-footer text-muted">
-            <a href="/auth">Already have an account?</a>
+            <a href="{{url_for('authenticationpage')}}">Already have an account? Login</a>
         </div>
     </div>
 </div> 

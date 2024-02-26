@@ -31,13 +31,6 @@ async def read_all_by_user(
     urls = db.query(model.URL).all()
     return templates.TemplateResponse("index.html", {"request": request, "urls": urls})
 
-#VIEW URL BY KEY
-@router.get("/faq", response_class = HTMLResponse)
-async def read_all_by_user(
-    request:Request
-):
-    return templates.TemplateResponse("faq.html", {"request": request})
-
 
 #create_url ROUTE
 @router.post("/create_short_url", response_model=url.URLListItem)
@@ -153,3 +146,20 @@ async def download_qr(url_key:str, db:Session=Depends(database.get_db)):
         media_type="image/png",
         content_disposition_type= "attachment"
     )
+    
+@router.get("/delete/{url_id}", response_class=HTMLResponse)
+async def delete_todo(request:Request, url_id: int, db:Session=Depends(database.get_db)):
+    
+    user = await service.authenticate_user(request)
+    if user is None:
+        return RedirectResponse("/auth", status_code=status.HTTP_302_FOUND)
+    
+    url_model = db.query(model.URL).filter(model.URL.id == url_id).filter(model.URL.owner == user.get("id")).first()
+    
+    if url_model is None:
+        return RedirectResponse("/dashboard", status_code=status.HTTP_302_FOUND)
+    
+    db.delete(url_model)
+    db.commit()
+    
+    return RedirectResponse("dashboard", status_code=status.HTTP_302_FOUND)
