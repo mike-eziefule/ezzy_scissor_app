@@ -1,7 +1,7 @@
 """Routes related to URL adding and listing"""
 
 import validators
-from fastapi import APIRouter, Request, Depends, HTTPException, status
+from fastapi import APIRouter, Request, Depends, HTTPException, status, Form
 from fastapi.responses import HTMLResponse
 from schema import url
 from sqlalchemy.orm import Session
@@ -27,18 +27,43 @@ async def read_all_by_user(
     request:Request,
     db:Session=Depends(database.get_db)
 ):
-    """View URL."""
-    urls = db.query(model.URL).all()
-    return templates.TemplateResponse("index.html", {"request": request, "urls": urls})
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@router.get("/{url_key}")
+async def forward_to_target_url(
+    url_key: str, 
+    request: Request, 
+    db:Session=Depends(database.get_db)
+):
+    """Forward to the correct full URL."""
+    
+    if db_url := crud.get_url_by_key(db=db, url_key=url_key):
+        crud.update_db_clicks(db=db, db_url=db_url)
+        return RedirectResponse(db_url.target_url)
+    else:
+        return templates.TemplateResponse("index.html", {"request": request})
 
 
-#create_url ROUTE
-@router.post("/create_short_url", response_model=url.URLListItem)
-async def create_url(target_url: str, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
+#create_url GET ROUTE
+@router.get("/create_url", response_class=HTMLResponse)
+async def create_url(request: Request):
+    return templates.TemplateResponse("create_url.html", {"request": request})
+
+#create_url POST ROUTE
+@router.post("/create_url", response_class=HTMLResponse)
+async def create_url(
+    request: Request,
+    target_url: str = Form(...),
+    title: str = Form(...),
+    db:Session=Depends(database.get_db)
+):
     """Create a URL shortener entry."""
     
     # authentication
-    user = service.get_user_from_token(db, token)
+    user = service.get_user_from_token(request, db)
+    
+    if user is None:
+        return RedirectResponse("/auth", status_code=status.HTTP_302_FOUND)
     
     if not validators.url(target_url):
         raise HTTPException(
@@ -46,56 +71,72 @@ async def create_url(target_url: str, db:Session=Depends(database.get_db), token
             detail="URL is not Valid"
         )
     
-    db_url = crud.create_and_save_url(db=db, url=target_url, user_id = user.id)
+    db_url = crud.create_and_save_url(db=db, title=title, url=target_url, user_id = user.id)
     base_url = URL(get_settings().base_url)
-    db_url.url = str(base_url.replace(path = db_url.key))
+    db_url.url = str(base_url.replace(path=db_url.key))
     
-    return db_url
+    qr = crud.make_qrcode(url_key=db_url.key)
+    save_qr =db.query(model.URL).filter(model.URL.key == db_url.key)
+    if save_qr.first():
+        save_qr.update({"qr_url": qr})
+        db.commit()
+    
+    # msg = "Created successfully"
+    return RedirectResponse("ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+    
 
-#CUSTOMIZE URL USER INFORMATION BY User ONLY
-@router.put("/custom/{url_key}")
-async def customize_url(url_key: str, costom_url:str, db:Session=Depends(database.get_db), token:str=Depends(oauth2_scheme)):
-    
-    # authentication
-    user = service.get_user_from_token(db, token)
-    
-    #Authorazation
-    scan_user = db.query(model.USER).filter(model.USER.email == user.email)
-    if not scan_user.first():
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, 
-            detail="UNAUTHORIZED USER"
-        )
-        
-    scan_key = db.query(model.URL).filter(model.URL.key == url_key, model.URL.is_active == True)
-        
-    if crud.get_url_by_key(costom_url, db) == True:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, 
-            detail="ALREADY TAKEN"
-        )
-    
-    scan_key.update({model.URL.key:costom_url})
-    db.commit()
-    raise HTTPException(
-        status_code=status.HTTP_202_ACCEPTED, 
-        detail='successfully'
-    )
-
-#VIEW URL BY KEY
-@router.get("/{url_key}")
-async def forward_to_target_url(
-    url_key: str,
+#CUSTOMIZE GET ROUTE
+@router.get("/customise/{url_key}", response_class=HTMLResponse)
+async def customise(
+    request: Request, 
+    url_key:str, 
     db:Session=Depends(database.get_db)
 ):
-    """Forward to the correct full URL."""
-    if db_url := crud.get_url_by_key(db=db, url_key=url_key):
-        crud.update_db_clicks(db=db, db_url=db_url)
-        return RedirectResponse(db_url.target_url)
-    else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-            detail= f"NO MATCH FOUND FOR {url_key} KEY"
-        )
+    
+    # authentication
+    user = service.get_user_from_token(request, db)
+    
+    if user is None:
+        return RedirectResponse("/auth", status_code=status.HTTP_403_FORBIDDEN)
+    
+    url_key = db.query(model.URL).filter(model.URL.key == url_key).first()
+    
+    return templates.TemplateResponse("customize.html", {"request": request, "user": user, 'url_key': url_key})
+
+
+#CUSTOMIZE PUT ROUTE
+@router.post("/customise/{url_key}", response_class=HTMLResponse)
+async def customize_url_entry(
+    request: Request,
+    url_key:str, 
+    custom_name:str = Form(...), 
+    title:str = Form(...), 
+    target_url:str = Form(...), 
+    db:Session=Depends(database.get_db), 
+    ):
+    
+    # authentication
+    user = service.get_user_from_token(request, db)
+    if user is None:
+        return RedirectResponse("/auth", status_code=status.HTTP_302_FOUND)
+        
+    scan_key = db.query(model.URL).filter(model.URL.key == url_key).first()
+    
+    
+    if crud.get_url_by_key(custom_name, db) == True:
+        return RedirectResponse("/auth", status_code=status.HTTP_300_MULTIPLE_CHOICES)
+    
+    #update qr url
+    qr = crud.make_qrcode(url_key= custom_name)
+    
+    scan_key.key = custom_name
+    scan_key.title=title
+    scan_key.target_url = target_url
+    scan_key.qr_url = qr
+    
+    db.add(scan_key)
+    db.commit()
+    return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
 
 
 #GENERATE QRCODE ROUTE
@@ -107,6 +148,7 @@ async def add_qrcode_to_url(url_key:str, db:Session=Depends(database.get_db), to
     user = service.get_user_from_token(db, token)
     
     db_url = crud.get_url_by_key(url_key, db)
+    
     if not db_url:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail= f"NO MATCH FOUND FOR {url_key} KEY"
@@ -120,6 +162,7 @@ async def add_qrcode_to_url(url_key:str, db:Session=Depends(database.get_db), to
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail= "URL KEY NOT FOUND"
         )
+        
     qr = crud.make_qrcode(url_key = db_url.key)
     save_qr =db.query(model.URL).filter(model.URL.key == url_key)
     if save_qr.first():
@@ -131,8 +174,19 @@ async def add_qrcode_to_url(url_key:str, db:Session=Depends(database.get_db), to
 
 #DOWNLOAD QR-CODE ROUTE
 @router.get("/download/{url_key}")
-async def download_qr(url_key:str, db:Session=Depends(database.get_db)):
+async def download_qr(
+    request: Request,
+    url_key:str, 
+    db:Session=Depends(database.get_db)
+    ):
+    
     """download qrcode for website."""
+    
+    # authentication
+    user = service.get_user_from_token(request, db)
+    if user is None:
+        return RedirectResponse("/auth", status_code=status.HTTP_302_FOUND)
+        
     
     db_url = crud.get_url_by_key(url_key, db)
     
@@ -140,26 +194,35 @@ async def download_qr(url_key:str, db:Session=Depends(database.get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail= "QR CODE KEY NOT FOUND"
         )
+        
     return FileResponse(
-        filename=db_url.key,
+        filename=db_url.key+".png",
         path=db_url.qr_url, 
         media_type="image/png",
         content_disposition_type= "attachment"
     )
     
-@router.get("/delete/{url_id}", response_class=HTMLResponse)
-async def delete_todo(request:Request, url_id: int, db:Session=Depends(database.get_db)):
     
-    user = await service.authenticate_user(request)
+    
+    
+@router.get("/delete/{url_key}", response_class=HTMLResponse)
+async def delete_todo(
+    request:Request, 
+    url_key: str, 
+    db:Session=Depends(database.get_db)
+    ):
+    
+    user = service.get_user_from_token(request, db)
+    
     if user is None:
         return RedirectResponse("/auth", status_code=status.HTTP_302_FOUND)
     
-    url_model = db.query(model.URL).filter(model.URL.id == url_id).filter(model.URL.owner == user.get("id")).first()
+    url_model = db.query(model.URL).filter(model.URL.key == url_key, model.URL.owner_id == user.id).first()
     
     if url_model is None:
-        return RedirectResponse("/dashboard", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
     
     db.delete(url_model)
     db.commit()
     
-    return RedirectResponse("dashboard", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)

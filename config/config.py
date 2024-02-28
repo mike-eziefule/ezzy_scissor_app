@@ -11,7 +11,7 @@ class Settings():
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # Postgreqsl specific
-    db_name: str = "Ezzy_scissor_database" #Database name
+    db_name: str = "Ezzy_scissor_db" #Database name
     db_address: str = "localhost"
     db_port: str = "5432"
     db_user: str = "postgres"

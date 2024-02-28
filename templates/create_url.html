@@ -16,14 +16,14 @@
                 Create unlimited url
             </div>
             <div class=card-body>
-                <form>
+                <form method="POST">
                     <div class="form-group">
                         <label>Destination</label>
-                        <input class="form-control" name="target_url" placeholder= "https://example.com/my-long-url" required></input>
+                        <input class="form-control" name="target_url" placeholder= "https://ezzy.com/my-long-url" required></input>
                     </div>
                     <div class="form-group">
                         <label>Title (optional) </label>
-                        <input type="text" class="form-control" id="title" placeholder= "Name your creation">
+                        <input type="text" class="form-control" id="title" name="title" placeholder= "Name your creation" value = "My URL">
                     </div>
                     
                     <button type="submit" class="btn btn-primary">Create</button>

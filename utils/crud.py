@@ -15,25 +15,21 @@ base_url = URL(get_settings().base_url)
 
 
 
-def create_and_save_url(db, url, user_id) -> url.URL:
+def create_and_save_url(db, title, url, user_id) -> url.URL:
     """Create URL in the Database."""
     #variables
     key = keygen.create_unique_random_key(db)
-    secret_key = f"{key}_{keygen.create_random_key(length=8)}"
 
     #database dump
     db_url = model.URL(
+        title = title,
         target_url= url,
         key= key,
-        private_key= secret_key,
-        # qr_url= None,
         date_created = datetime.now().date(), 
         owner_id = user_id
     )
     db.add(db_url)
     db.commit()
-    db.refresh(db_url)
-
     return db_url
 
 

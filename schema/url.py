@@ -4,9 +4,13 @@ from typing import List
 from datetime import date
 from schema import user
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 class URLBase(BaseModel):
     """Define URLBase class."""
     target_url: str
+    title: str
 
     class Config:
         """Set config for this class."""

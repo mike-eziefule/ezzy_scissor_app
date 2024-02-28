@@ -10,7 +10,9 @@ from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from storage import database
-from schema import user
+from schema import user, url
+from datetime import timedelta
+
 
 from storage.database import db_session
 from utils import service
@@ -24,18 +26,22 @@ templates = Jinja2Templates(directory="templates")
 
 
 #USER TOKEN GENERATION
-@router.post("/token")
+@router.post("/token", response_model= url.Token)
 async def login_for_access_token(
     response: Response, 
     form_data:Annotated[OAuth2PasswordRequestForm, Depends()], 
-    db:db_session):
+    db:db_session
+    ):
     
-    token = service.authenticate_user(form_data.username, form_data.password, db)
+    token = service.authenticate_user(form_data.username, form_data.password, timedelta(minutes=60), db)
     
+    if token == False:
+        return False
+        
     response.set_cookie(key="access_token", value = token, httponly=True)
     
     return True
-    # return token
+
 
 @router.post("/", response_class=HTMLResponse)
 async def login(request:Request, db:Session=Depends(database.get_db)):

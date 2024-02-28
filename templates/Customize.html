@@ -4,35 +4,48 @@
 
 <div class="container">
     <div class="card-body text-monospace"></div>
-    <div class="card-body text-monospace">message here</div>
+    <div name = "url_key" class="card-body text-monospace">clicks:{{url_key.clicks}}</div>
     <div class="card-body">
         <h2>Customize Url</h2>
     </div>
-    <div class="card-body"></div>
+    <div class="card-body">
+        
+    </div>
 
     <div class="container">
+        {% if msg %} {% if msg == 'Updated successfully' %}
+        <div class="alert alert-success" role="alert">{{ msg }}</div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">{{ msg }}</div>
+        {% endif %} {% endif %}
+
         <div class="card">
             <div class="card-header">
                 you can choose Preferred key
             </div>
             <div class=card-body>
-                <form>
+                <form method = "POST">
+                    <!---->
                     <div class="form-group">
                         <label>URL Key</label>
-                        <input class="form-control" name="key" placeholder= "input URL Key ie. K1By4" required></input>
+                        <input name = "Key" class="form-control" type="text" id="title" value="{{url_key.key}}">
                     </div>
                     <div class="form-group">
-                        <label>Title (optional) </label>
-                        <input type="text" class="form-control" id="title" placeholder= "Name your URL">
+                        <label>Title (optional)</label>
+                        <input name = "title" class="form-control" type="text" id="title" value="{{url_key.title}}">
                     </div>
                     <div class="form-group">
-                        <label>Preferred Key </label>
-                        <input type="text" class="form-control" id="title" placeholder= "input your customized key ie OBO1">
+                        <label>Target URL (optional) </label>
+                        <input name = "target_url" class="form-control" value="{{url_key.target_url}}"></input>
+                    </div>
+                    <div class="form-group">
+                        <label>Custom Key</label>
+                        <input name ="custom_name" type="text" class="form-control" id="title" placeholder= "Customize URL name" required>
                     </div>
                     
                     <button type="submit" class="btn btn-primary">Customize</button>
                     <button
-                        onclick="window.location.href='dashboard'"
+                        onclick="window.location.href='/ezzy/dashboard'"
                         type="button"
                         class="btn btn-success"
                     >

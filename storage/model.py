@@ -2,7 +2,6 @@ from storage.database import Base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
-
 class USER(Base):
     __tablename__ = 'users'
     
@@ -19,7 +18,8 @@ class URL(Base):
     __tablename__ = 'urls'
     
     id = Column(Integer, primary_key=True, index = True)
-    target_url = Column(String, nullable= False)
+    title = Column(Integer, nullable=True, default="My Title")
+    target_url = Column(String, nullable=True)
     key = Column(String, nullable= False, unique=True)
     clicks = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)

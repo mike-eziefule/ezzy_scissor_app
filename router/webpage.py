@@ -2,7 +2,13 @@
 
 from fastapi import APIRouter, Request, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse
+from starlette.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
+from storage import database, model
+from sqlalchemy.orm import Session
+from utils import crud, service
+from starlette.datastructures import URL
+from config.config import get_settings
 
 
 router = APIRouter(prefix="/ezzy", tags=["Webpages"])
@@ -29,15 +35,35 @@ async def features(
 async def authenticationpage(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
-#login page route
-@router.get("/create_url", response_class=HTMLResponse)
-async def authenticationpage(request: Request):
-    return templates.TemplateResponse("create_url.html", {"request": request})
+# #login page route
+# @router.get("/create_url", response_class=HTMLResponse)
+# async def create_url(request: Request):
+#     return templates.TemplateResponse("create_url.html", {"request": request})
 
 #login page route
 @router.get("/dashboard", response_class=HTMLResponse)
-async def authenticationpage(request: Request):
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+async def dashboard(
+    request: Request,
+    db:Session=Depends(database.get_db)
+    ):
+    
+    # authentication
+    user = service.get_user_from_token(request, db)
+    if not user:
+        return RedirectResponse("ezzy/login", status_code=status.HTTP_302_FOUND)
+    
+    """View URL."""
+    urls = db.query(model.URL).filter(model.URL.owner_id == user.id).all()
+    
+    base_url = URL(get_settings().base_url)
+    
+    return templates.TemplateResponse(
+        "dashboard.html",{
+            "request": request, 
+            "urls": urls, 
+            "user": user,
+            "base_url": base_url}
+    )
 
 
 #logout page route
@@ -58,7 +84,3 @@ async def register(request: Request):
 async def register(request: Request):
     return templates.TemplateResponse("dashboard.html", {"request": request})
 
-#register page route
-@router.get("/edit_url", response_class=HTMLResponse)
-async def register(request: Request):
-    return templates.TemplateResponse("customize.html", {"request": request})
