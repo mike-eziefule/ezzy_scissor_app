@@ -43,21 +43,34 @@ async def login_for_access_token(
     return True
 
 
-@router.post("/", response_class=HTMLResponse)
-async def login(request:Request, db:Session=Depends(database.get_db)):
+@router.post("/login", response_class=HTMLResponse)
+async def login(
+    request:Request, 
+    db:Session=Depends(database.get_db)
+    ):
+    
+    msg = []
     
     try:
         form = user.LoginForm(request)
         await form.create_auth_form()
-        response = RedirectResponse(url="/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+        response = RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
         
         validate_user_cookie = await login_for_access_token(response=response, form_data=form, db=db)
         
         if not validate_user_cookie:
-            msg = "Invalid username or password"
+            msg.append("Invalid Email or Password")
             return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+        
         return response
     except HTTPException:
-        msg = "Unknown error"
+        msg.append("Unknown error")
         return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
     
+    
+@router.get("/logout", response_class=HTMLResponse)
+async def logout(request: Request):
+    msg = "Logout successfully"
+    response = templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+    response.delete_cookie(key="access_token")
+    return response

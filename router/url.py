@@ -23,25 +23,11 @@ templates = Jinja2Templates(directory="templates")
 
 #VIEW URL BY KEY
 @router.get("/", response_class = HTMLResponse)
-async def read_all_by_user(
+async def index_page(
     request:Request,
     db:Session=Depends(database.get_db)
 ):
     return templates.TemplateResponse("index.html", {"request": request})
-
-@router.get("/{url_key}")
-async def forward_to_target_url(
-    url_key: str, 
-    request: Request, 
-    db:Session=Depends(database.get_db)
-):
-    """Forward to the correct full URL."""
-    
-    if db_url := crud.get_url_by_key(db=db, url_key=url_key):
-        crud.update_db_clicks(db=db, db_url=db_url)
-        return RedirectResponse(db_url.target_url)
-    else:
-        return templates.TemplateResponse("index.html", {"request": request})
 
 
 #create_url GET ROUTE
@@ -57,6 +43,7 @@ async def create_url(
     title: str = Form(...),
     db:Session=Depends(database.get_db)
 ):
+    
     """Create a URL shortener entry."""
     
     # authentication
@@ -83,7 +70,22 @@ async def create_url(
     
     # msg = "Created successfully"
     return RedirectResponse("ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+
+
+@router.get("/{url_key}")
+async def forward_to_target_url(
+    url_key: str, 
+    request: Request, 
+    db:Session=Depends(database.get_db)
+):
+    """Forward to the correct full URL."""
     
+    if db_url := crud.get_url_by_key(db=db, url_key=url_key):
+        crud.update_db_clicks(db=db, db_url=db_url)
+        return RedirectResponse(db_url.target_url)
+    else:
+        return templates.TemplateResponse("index.html", {"request": request})
+
 
 #CUSTOMIZE GET ROUTE
 @router.get("/customise/{url_key}", response_class=HTMLResponse)
@@ -186,7 +188,6 @@ async def download_qr(
     user = service.get_user_from_token(request, db)
     if user is None:
         return RedirectResponse("/auth", status_code=status.HTTP_302_FOUND)
-        
     
     db_url = crud.get_url_by_key(url_key, db)
     
@@ -201,8 +202,6 @@ async def download_qr(
         media_type="image/png",
         content_disposition_type= "attachment"
     )
-    
-    
     
     
 @router.get("/delete/{url_key}", response_class=HTMLResponse)

@@ -1,5 +1,5 @@
 {% include 'layout.html' %} {% block title%}
-<title>Ezzy | new</title>
+<title>Dashboard | Ez-scissor</title>
 {% endblock%}
 
 <div class="container">
@@ -33,22 +33,21 @@
             {% for url in urls %}
             <div class="navbar">
                 
-
                 <div class="col">
                     <div class="container">
-                        <div><h2>Title: {{url.title}}</h2></div>
-                        <div><h3 style ="color:#007bff"><a href="{{base_url}}{{url.key}}" target ="_blank">{{base_url}}{{url.key}}</a></h3></div>
-                        <div><h5>Destination: {{url.target_url}}</h5></div>
-                        <div><h4>Key: {{url.key}}</h4></div>
-                        <div><h5>clicks: {{url.clicks}}</h5></div>
+                        <div><h3>{{url.title}}</h3></div>
+                        <div><a href="{{base_url}}{{url.key}}" target ="_blank"><h3 style ="color:#007bff">{{base_url}}{{url.key}}</h3></a></div>
+                        <div><h5>{{url.target_url}}</h5></div>
+                        <div><h4>url_key: {{url.key}}</h4></div>
+                        <div><h4>clicks: {{url.clicks}}</h4></div>
                     </div>
                 </div>
                 <div class="row"><img src="{{base_url}}{{url.qr_url}}" width="150" height="150" alt="qr_code"></div>
             </div>
             <hr class="orb-divider"></hr>
             
-            <div class="container">
-                <div class="row">
+            <div class="">
+                <div class="card-footer card-link">
                     <button
                     onclick="window.location.href='/customise/{{url.key}}'"
                     type="button"

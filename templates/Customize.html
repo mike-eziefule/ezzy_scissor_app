@@ -1,10 +1,10 @@
 {% include 'layout.html' %} {% block title%}
-<title>Ezzy | new</title>
+<title>Customize | Ez-scissor</title>
 {% endblock%}
 
 <div class="container">
     <div class="card-body text-monospace"></div>
-    <div name = "url_key" class="card-body text-monospace">clicks:{{url_key.clicks}}</div>
+    <div name = "url_key" class="card-body text-monospace">Old url key:{{url_key.key}}</div>
     <div class="card-body">
         <h2>Customize Url</h2>
     </div>
@@ -21,15 +21,11 @@
 
         <div class="card">
             <div class="card-header">
-                you can choose Preferred key
+                You can choose Preferred url_key
             </div>
             <div class=card-body>
                 <form method = "POST">
-                    <!---->
-                    <div class="form-group">
-                        <label>URL Key</label>
-                        <input name = "Key" class="form-control" type="text" id="title" value="{{url_key.key}}">
-                    </div>
+        
                     <div class="form-group">
                         <label>Title (optional)</label>
                         <input name = "title" class="form-control" type="text" id="title" value="{{url_key.title}}">
