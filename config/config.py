@@ -18,7 +18,7 @@ class Settings():
     db_pw: str = "admin" # Database password
 
     # default to SQLite
-    db_backend: str = "postgresql" #change to 'postgresql' for postgres database
+    db_backend: str = "sqlite" #change to 'postgresql' for postgres database
     
     #openai tags
     tags = [
