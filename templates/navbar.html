@@ -1,21 +1,65 @@
+
+{% if user %}
 <div class="Heroheader">
+    
     <div class="logo">
         <div class="logo-icon">
-            <!--
-            <img src = "{{url_for('static', path='/media/chain logo.svg')}}" alt= "logo SVG" />
-            -->
         </div>
         <div class="Logo-text">
-            <a href="/" class="active"><h3>EZ-SCISSOR</h3></a>
+            <a href="{{url_for('homepage')}}" class="active"><h3>EZ-SCISSOR</h3></a>
         </div>
     </div>
+    
+    <div class="nav">
+        <a href="{{url_for('create_url')}}" class="active">Create new<i class="fa fa-caret-down"></i></a>
+        <a href="{{url_for('dashboard')}}" class="urls">My Dashboard</a>
+        <a href="{{url_for('features')}}" class="active">Features<i class="fa fa-caret-down"></i></a>
+    </div>
+
+    <div class="login">
+        <a href="{{url_for('faq_page')}}">FAQs</a>
+        <a href="{{url_for('logout')}}">
+            <button class="button">Logout</button>
+        </a>
+    </div>
+
+    <div class="menu">
+        <i class="fa fa-bars fa-2xl"></i>
+        <div class="nav-mobile">
+            <a href="{{url_for('create_url')}}">Create New</a>
+            <a href="{{url_for('dashboard')}}" class="urls">My Dashboard</a>
+            <a href="{{url_for('features')}}" class="active">Features<i class="fa fa-caret-down"></i></a>
+            <a href="{{url_for('faq_page')}}">FAQs</a>
+            <a href="{{url_for('logout')}}">Logout</a>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="Heroheader">
+    
+    <div class="logo">
+        <div class="logo-icon">
+        </div>
+        <div class="Logo-text">
+            <a href="{{url_for('homepage')}}" class="active"><h3>EZ-SCISSOR</h3></a>
+        </div>
+    </div>
+
     <div class="nav">
         <a href="{{url_for('authenticationpage')}}" class="urls">My URLs</a>
         <a href="{{url_for('features')}}" class="active">Features<i class="fa fa-caret-down"></i></a>
         <a href="#">Analytics</a>
         <a href="{{url_for('faq_page')}}">FAQs</a>
     </div>
-    <div class="login"><a href="{{url_for('authenticationpage')}}">Log in</a><a href="{{url_for('authenticationpage')}}"><button class="button">Try for free</button></a></div>
+    
+    <div class="login">
+        <a href="{{url_for('authenticationpage')}}">Login</a>
+        <a href="{{url_for('authenticationpage')}}">
+        <button class="button">Try for free</button></a>
+    </div>
+
     <div class="menu">
         <i class="fa fa-bars fa-2xl"></i>
         <div class="nav-mobile">
@@ -25,6 +69,7 @@
             <a href="{{url_for('faq_page')}}">FAQs</a>
             <a href="{{url_for('authenticationpage')}}">Log in</a>
             <a href="{{url_for('register')}}">Try for free</a>
-        </div>
+        </div>  
     </div>
 </div>
+{% endif %}

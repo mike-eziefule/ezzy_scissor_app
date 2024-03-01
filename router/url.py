@@ -23,17 +23,30 @@ templates = Jinja2Templates(directory="templates")
 
 #VIEW URL BY KEY
 @router.get("/", response_class = HTMLResponse)
-async def index_page(
+async def homepage(
     request:Request,
     db:Session=Depends(database.get_db)
 ):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # authenticate if a user is logged in
+    user = service.get_user_from_token(request, db)
+    if not user:
+        pass
+    
+    return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
 
 #create_url GET ROUTE
 @router.get("/create_url", response_class=HTMLResponse)
-async def create_url(request: Request):
-    return templates.TemplateResponse("create_url.html", {"request": request})
+async def create_url(
+    request: Request,
+    db:Session=Depends(database.get_db)
+    ):
+    
+    # authenticate if a user is logged in
+    user = service.get_user_from_token(request, db)
+    if not user:
+        pass
+    return templates.TemplateResponse("create_url.html", {"request": request, "user": user})
 
 #create_url POST ROUTE
 @router.post("/create_url", response_class=HTMLResponse)
