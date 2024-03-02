@@ -38,7 +38,7 @@ def get_url_by_key(url_key:str, db:Session) -> model.URL:
     """Return a URL by specified key."""
     return (
         db.query(model.URL)
-        .filter(model.URL.key == url_key, model.URL.is_active == True)
+        .filter(model.URL.key == url_key)
         .first()
     )
     

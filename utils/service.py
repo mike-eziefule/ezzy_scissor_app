@@ -31,8 +31,6 @@ def get_user_from_token(request: Request, db):
         payload = jwt.decode(token, get_settings().SECRET_KEY, algorithms=[get_settings().ALGORITHM])    
         username: str = payload.get("sub")
         
-        # return {"username": username}
-        
         #Querry the sub(email) from to token against the stored email
         user = db.query(model.USER).filter(model.USER.email==username).first()        
         if user is None:
@@ -42,10 +40,7 @@ def get_user_from_token(request: Request, db):
         return user
         
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, 
-            detail="Unable to verify credentials"
-        )
+        return False
     
     
 

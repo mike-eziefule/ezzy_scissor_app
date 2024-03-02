@@ -43,6 +43,15 @@ async def login_for_access_token(
     return True
 
 
+#login get page route
+@router.get("/login", response_class=HTMLResponse)
+async def authenticationpage(
+    request: Request,
+    ):
+    
+    return templates.TemplateResponse("login.html", {"request": request})
+
+#login post page route
 @router.post("/login", response_class=HTMLResponse)
 async def login(
     request:Request, 
@@ -60,17 +69,29 @@ async def login(
         
         if not validate_user_cookie:
             msg.append("Invalid Email or Password")
-            return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+            return templates.TemplateResponse("login.html", {
+                "request": request, 
+                "msg": msg, 
+                "email": form.username
+            })
         
         return response
     except HTTPException:
         msg.append("Unknown error")
-        return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
+        return templates.TemplateResponse("login.html", {
+            "request": request, 
+            "msg": msg,
+            "email": form.username
+            })
     
-    
+
+#logout page route
 @router.get("/logout", response_class=HTMLResponse)
 async def logout(request: Request):
-    msg = "Logout successfully"
+    
+    msg = []
+    
+    msg.append("Logout successful")
     response = templates.TemplateResponse("login.html", {"request": request, "msg": msg})
     response.delete_cookie(key="access_token")
     return response
