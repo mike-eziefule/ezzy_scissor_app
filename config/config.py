@@ -6,19 +6,19 @@ from functools import lru_cache
 class Settings():
     """Default BaseSettings."""
 
-    env_name: str = "Local"
+    env_name: str = "development"
     base_url: str = "http://localhost:8000/"
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # Postgreqsl specific
-    db_name: str = "ezzy_scissor_db" #Database name
-    db_address: str = "localhost"
-    db_port: str = "5432"
-    db_user: str = "postgres"
-    db_pw: str = "admin" # Database password
+    # db_name: str = "txuvnlmz" #Database name
+    # db_address: str = "ruby.db.elephantsql.com"
+    # db_port: str = "5432"
+    # db_user: str = "txuvnlmz"
+    # db_pw: str = "DjcJqOSw9ZWZy7HM38PD3DmWWrv8HFoK" # Database password
 
     # default to SQLite
-    db_backend: str = "sqlite" #change to 'postgresql' for postgres database
+    db_backend: str = "postgresql" #change to 'postgresql' for postgres database
     
     #openai tags
     tags = [
@@ -49,10 +49,5 @@ def get_settings() -> Settings:
     """Return the current settings."""
     settings = Settings()
     if settings.db_backend == "postgresql":
-        settings.db_url = str(
-            f"postgresql://{settings.db_user}:{settings.db_pw}"
-            f"@{settings.db_address}:{settings.db_port}/{settings.db_name}"
-        )
-    print(f"Loading settings for: {settings.env_name}")
-    print(f"Database String: '{settings.db_url}'")
+        settings.db_url = "postgresql://txuvnlmz:DjcJqOSw9ZWZy7HM38PD3DmWWrv8HFoK@ruby.db.elephantsql.com/txuvnlmz"
     return settings
