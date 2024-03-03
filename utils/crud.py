@@ -7,7 +7,7 @@ from utils import keygen, qrcode
 from storage import model
 from sqlalchemy.orm import Session
 from datetime import datetime
-# from utils.qrcode import qr_image
+# from mega import Mega
 
 
 img_path = "static/images/qr_images/"
@@ -16,8 +16,10 @@ base_url = URL(get_settings().base_url)
 
 
 def create_and_save_url(db, title, url, user_id) -> url.URL:
+    
     """Create URL in the Database."""
     #variables
+    
     key = keygen.create_unique_random_key(db)
 
     #database dump
@@ -32,7 +34,6 @@ def create_and_save_url(db, title, url, user_id) -> url.URL:
     db.commit()
     return db_url
 
-
 #function 2
 def get_url_by_key(url_key:str, db:Session) -> model.URL:
     """Return a URL by specified key."""
@@ -41,7 +42,7 @@ def get_url_by_key(url_key:str, db:Session) -> model.URL:
         .filter(model.URL.key == url_key)
         .first()
     )
-    
+
 
 def update_db_clicks(db: Session, db_url: model.URL) -> model.URL:
     """Update the count of times the link has been visited."""

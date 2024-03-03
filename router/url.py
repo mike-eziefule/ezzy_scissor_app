@@ -1,7 +1,7 @@
 """Routes related to URL adding and listing"""
 
 import validators
-from fastapi import APIRouter, Request, Depends, status, Form
+from fastapi import APIRouter, Request, Depends, status, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from storage import database, model
@@ -10,7 +10,8 @@ from starlette.datastructures import URL
 from config.config import get_settings
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
-
+from pathlib import Path
+import os
 
 router = APIRouter(tags=["url"])
 
@@ -79,17 +80,21 @@ async def create_url_post(
     db_url.url = str(base_url.replace(path=db_url.key))
     
     #generare qr image
-    #remind me to put this in try/except block
-    qr = crud.make_qrcode(url_key=db_url.key)
     
-    #save qr image path to db file
-    save_qr =db.query(model.URL).filter(model.URL.key == db_url.key)
-    if save_qr.first():
-        save_qr.update({"qr_url": qr})
-        db.commit()
-    
-    return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+    try:
+        #create qr image and save it temporarily
+        qr = crud.make_qrcode(url_key=db_url.key)
 
+        #save qr image path to db file
+        save_qr =db.query(model.URL).filter(model.URL.key == db_url.key)
+        if save_qr.first():
+            save_qr.update({"qr_url": qr})
+            db.commit()
+        
+        return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail = f"Error: {str(e)}")
 
 #redirect clicks to destination
 @router.get("/{url_key}")
@@ -229,6 +234,9 @@ async def delete_url(
     url_model = db.query(model.URL).filter(model.URL.key == url_key, model.URL.owner_id == user.id).first()
     if url_model is None:
         return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+    
+    if url_model.qr_url:
+        os.remove(url_model.qr_url)
     
     db.delete(url_model)
     db.commit()

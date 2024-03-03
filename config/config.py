@@ -7,7 +7,8 @@ class Settings():
     """Default BaseSettings."""
 
     env_name: str = "development"
-    base_url: str = "http://localhost:8000/"
+    # base_url: str = "http://localhost:8000/"
+    base_url: str = "https://ez-ly.onrender.com/"
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # Postgreqsl specific
@@ -50,4 +51,6 @@ def get_settings() -> Settings:
     settings = Settings()
     if settings.db_backend == "postgresql":
         settings.db_url = "postgresql://txuvnlmz:DjcJqOSw9ZWZy7HM38PD3DmWWrv8HFoK@ruby.db.elephantsql.com/txuvnlmz"
+        settings.base_url = "https://ez-ly.onrender.com"
+
     return settings
