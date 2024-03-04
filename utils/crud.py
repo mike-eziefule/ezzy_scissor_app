@@ -18,8 +18,7 @@ base_url = URL(get_settings().base_url)
 def create_and_save_url(db, title, url, user_id) -> url.URL:
     
     """Create URL in the Database."""
-    #variables
-    
+    #generate unique key
     key = keygen.create_unique_random_key(db)
 
     #database dump
@@ -37,6 +36,7 @@ def create_and_save_url(db, title, url, user_id) -> url.URL:
 #function 2
 def get_url_by_key(url_key:str, db:Session) -> model.URL:
     """Return a URL by specified key."""
+    
     return (
         db.query(model.URL)
         .filter(model.URL.key == url_key)

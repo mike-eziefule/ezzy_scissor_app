@@ -10,15 +10,16 @@ from starlette.datastructures import URL
 from config.config import get_settings
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
-from pathlib import Path
+from starlette.background import BackgroundTasks
 import os
-
 router = APIRouter(tags=["url"])
 
 
 templates = Jinja2Templates(directory="templates")
 
-
+def remove_file(path: str) -> None:
+    os.unlink(path)
+    
 #VIEW URL BY KEY
 @router.get("/", response_class = HTMLResponse)
 async def homepage(
@@ -46,6 +47,7 @@ async def create_url(
         "create_url.html", 
         {"request": request, "user": user}
     )
+    
 #create_url POST ROUTE
 @router.post("/create_url", response_class=HTMLResponse)
 async def create_url_post(
@@ -57,17 +59,26 @@ async def create_url_post(
     
     """Create a URL shortener entry."""
     
+    msg = []
+    
     # authentication
     user = service.get_user_from_token(request, db)
+    
     if not user:
-        msg = []
-        
         msg.append("Session Expired, Login")
         return templates.TemplateResponse("login.html", {"request": request, "msg": msg})
     
     if not validators.url(target_url):
-        return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
-
+        msg.append("Invalid destination url, kindly include: https:// or http://")
+        return templates.TemplateResponse("create_url.html", 
+            {
+                "request": request,
+                "msg": msg, 
+                "user": user, 
+                "target_url": target_url,
+                "title": title
+            }
+        )
     
     db_url = crud.create_and_save_url(
         db=db, 
@@ -75,26 +86,28 @@ async def create_url_post(
         url=target_url, 
         user_id = user.id
     )
-    
-    base_url = URL(get_settings().base_url)
-    db_url.url = str(base_url.replace(path=db_url.key))
-    
-    #generare qr image
-    
-    try:
-        #create qr image and save it temporarily
-        qr = crud.make_qrcode(url_key=db_url.key)
+    return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
 
-        #save qr image path to db file
-        save_qr =db.query(model.URL).filter(model.URL.key == db_url.key)
-        if save_qr.first():
-            save_qr.update({"qr_url": qr})
-            db.commit()
-        
-        return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
     
-    except Exception as e:
-        raise HTTPException(status_code=500, detail = f"Error: {str(e)}")
+    # base_url = URL(get_settings().base_url)
+    # db_url.url = str(base_url.replace(path=db_url.key))
+    
+    # #generare qr image
+    
+    # try:
+    #     #create qr image and save it temporarily
+    #     qr = crud.make_qrcode(url_key=db_url.key)
+
+    #     #save qr image path to db file
+    #     save_qr =db.query(model.URL).filter(model.URL.key == db_url.key)
+    #     if save_qr.first():
+    #         save_qr.update({"qr_url": qr})
+    #         db.commit()
+        
+    #     return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+    
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail = f"Error: {str(e)}")
 
 #redirect clicks to destination
 @router.get("/{url_key}")
@@ -156,9 +169,9 @@ async def customize_url_post(
     if not scan_key:
         return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
     
-    check_availabile = crud.get_url_by_key(url_key=custom_name, db=db)
+    availabile = crud.get_url_by_key(url_key=custom_name, db=db)
     
-    if check_availabile:
+    if availabile:
         
         msg.append("Custom name is taken")
         return templates.TemplateResponse(
@@ -169,13 +182,9 @@ async def customize_url_post(
             }
         )
     
-    #update qr image
-    qr = crud.make_qrcode(url_key= custom_name)
-    
     scan_key.key = custom_name
     scan_key.title= title
     scan_key.target_url = target_url
-    scan_key.qr_url = qr
     
     db.add(scan_key)
     db.commit()
@@ -186,6 +195,7 @@ async def customize_url_post(
 #DOWNLOAD QR-CODE ROUTE
 @router.get("/download/{url_key}")
 async def download_qr(
+    background_tasks: BackgroundTasks,
     request: Request,
     url_key:str, 
     db:Session=Depends(database.get_db)
@@ -205,12 +215,27 @@ async def download_qr(
         # msg.append("URL does not exist")
         return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
     
-    return FileResponse(
-        filename=db_url.key+".png",
-        path=db_url.qr_url, 
-        media_type="image/png",
-        content_disposition_type= "attachment"
-    )
+    
+    #generare qr image
+    try:
+        #create qr image and save it temporarily
+        qr = crud.make_qrcode(url_key=db_url.key) 
+        
+        #remove temporary QR image file after download 
+        background_tasks.add_task(remove_file, qr)
+        
+        response =  FileResponse(
+            filename = db_url.key+".png",
+            path = qr,
+            media_type="image/png",
+            content_disposition_type= "attachment",
+        )
+        return response
+    
+    except Exception as e:
+        
+        return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
+
 
 #delete entry routes
 @router.get("/delete/{url_key}", response_class=HTMLResponse)
