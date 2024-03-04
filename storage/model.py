@@ -9,7 +9,7 @@ class USER(Base):
     firstname = Column(String, nullable= False)
     lastname = Column(String, nullable= False)
     email = Column(String, nullable= False, unique=True)
-    password = Column(String, nullable= False, index= True)    
+    password = Column(String, nullable= False, index= True) 
     
     urls = relationship("URL", back_populates = "owner")
 
@@ -24,6 +24,5 @@ class URL(Base):
     clicks = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
     date_created = Column(Date, nullable= False)
-    qr_url = Column(String, nullable= True)
     owner_id = Column(Integer, ForeignKey("users.id"), default=0)
     owner = relationship("USER", back_populates = "urls")

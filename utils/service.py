@@ -1,13 +1,11 @@
 """ carry functions that makes code look bulky"""
-from fastapi import Depends, HTTPException, status, Request
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import Request
+from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
-from jose import jwt, JWTError
-
+from jose import jwt
 from config.config import get_settings
 from datetime import timedelta, datetime
 from storage import model, database
-from typing import Annotated
 
 
 bcrpyt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -15,13 +13,11 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
 def get_user_from_token(request: Request, db):
-    
     """
         Decode token, extract username/email, 
         then authenticate if user is in db, 
         return user
     """
-    
     try:
         
         token = request.cookies.get('access_token')
@@ -41,8 +37,6 @@ def get_user_from_token(request: Request, db):
         
     except Exception as e:
         return False
-    
-    
 
 
 #checks availability of user's username and password

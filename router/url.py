@@ -86,6 +86,7 @@ async def create_url_post(
         url=target_url, 
         user_id = user.id
     )
+    db.refresh(db_url)
     return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
 
     

@@ -7,8 +7,8 @@ class Settings():
     """Default BaseSettings."""
 
     env_name: str = "development"
-    # base_url: str = "http://localhost:8000/"
-    base_url: str = "https://ez-ly.onrender.com/"
+    base_url: str = "http://localhost:8000/"
+    # base_url: str = "https://ez-ly.onrender.com/"
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # Postgreqsl specific

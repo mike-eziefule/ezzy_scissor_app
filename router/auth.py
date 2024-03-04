@@ -12,8 +12,6 @@ from sqlalchemy.orm import Session
 from storage import database
 from schema import user, url
 from datetime import timedelta
-
-
 from storage.database import db_session
 from utils import service
 
