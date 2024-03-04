@@ -18,7 +18,7 @@ class URL(Base):
     __tablename__ = 'urls'
     
     id = Column(Integer, primary_key=True, index = True)
-    title = Column(Integer, nullable=True, default="My Title")
+    title = Column(String, nullable=True, default="My Title")
     target_url = Column(String, nullable=True)
     key = Column(String, nullable= False, unique=True)
     clicks = Column(Integer, default=0)
