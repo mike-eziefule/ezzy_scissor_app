@@ -50,7 +50,7 @@ def get_settings() -> Settings:
     """Return the current settings."""
     settings = Settings()
     if settings.db_backend == "postgresql":
-        settings.db_url = "postgresql://txuvnlmz:DjcJqOSw9ZWZy7HM38PD3DmWWrv8HFoK@ruby.db.elephantsql.com/txuvnlmz"
+        settings.db_url = "postgresql://ofqcobrn:zGAxW-IDKlJg4F2sYwCv-NfYZpYDV3ag@ruby.db.elephantsql.com/ofqcobrn"
         settings.base_url = "https://ez-ly.onrender.com"
 
     return settings
