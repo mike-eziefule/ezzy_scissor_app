@@ -8,7 +8,6 @@ class Settings():
 
     env_name: str = "development"
     base_url: str = "http://localhost:8000/"
-    # base_url: str = "https://ez-ly.onrender.com/"
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # Postgreqsl specific
@@ -19,7 +18,7 @@ class Settings():
     # db_pw: str = "DjcJqOSw9ZWZy7HM38PD3DmWWrv8HFoK" # Database password
 
     # default to SQLite
-    db_backend: str = "postgresql" #change to 'postgresql' for postgres database
+    db_backend: str = "sqlite" #change to 'postgresql' for postgres database
     
     #openai tags
     tags = [

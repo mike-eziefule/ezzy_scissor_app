@@ -7,8 +7,7 @@ from utils import keygen, qrcode
 from storage import model
 from sqlalchemy.orm import Session
 from datetime import datetime
-# from mega import Mega
-
+import tempfile
 
 img_path = "static/images/qr_images/"
 base_url = URL(get_settings().base_url)
@@ -52,14 +51,17 @@ def update_db_clicks(db: Session, db_url: model.URL) -> model.URL:
     return db_url    
 
 
+
 def make_qrcode(url_key):
     
-    shorturl = str(base_url.replace(path = base_url+url_key))
+    tempfile.tempdir = img_path
+
+    shorturl = str(base_url.replace(path = url_key))
     # Create qr_code
     qrcode.qr_image().url_to_qr(
         url=shorturl, 
-        img_path=img_path, 
+        img_path= tempfile.tempdir, 
         url_key=url_key
     )
-    
+
     return (img_path+url_key+'.png')
