@@ -175,10 +175,12 @@ async def customize_url_post(
     if availabile:
         
         msg.append("Custom name is taken")
+        
         return templates.TemplateResponse(
             "customize.html", 
-            {"request": request, 
-                'url_key': scan_key,
+            {
+                "request": request, 
+                'url_key': url_key,
                 "msg": msg
             }
         )
@@ -220,14 +222,14 @@ async def download_qr(
     #generare qr image
     try:
         #create qr image and save it temporarily
-        qr = crud.make_qrcode(url_key=db_url.key) 
+        qr = crud.make_qrcode(url_key = db_url.key) 
         
         #remove temporary QR image file after download 
         background_tasks.add_task(remove_file, qr)
         
         response =  FileResponse(
             filename = db_url.key+".png",
-            path = qr,
+            path = get_settings().base_url+qr,
             media_type="image/png",
             content_disposition_type= "attachment",
         )

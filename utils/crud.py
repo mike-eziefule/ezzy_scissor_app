@@ -54,7 +54,7 @@ def update_db_clicks(db: Session, db_url: model.URL) -> model.URL:
 
 def make_qrcode(url_key):
     
-    shorturl = str(base_url.replace(path = url_key))
+    shorturl = str(base_url.replace(path = base_url+url_key))
     # Create qr_code
     qrcode.qr_image().url_to_qr(
         url=shorturl, 
