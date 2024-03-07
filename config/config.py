@@ -1,8 +1,6 @@
 """Default configuration settings."""
 from functools import lru_cache
 
-
-
 class Settings():
     """Default BaseSettings."""
 
@@ -10,15 +8,8 @@ class Settings():
     base_url: str = "http://localhost:8000/"
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
-    # Postgreqsl specific
-    # db_name: str = "txuvnlmz" #Database name
-    # db_address: str = "ruby.db.elephantsql.com"
-    # db_port: str = "5432"
-    # db_user: str = "txuvnlmz"
-    # db_pw: str = "DjcJqOSw9ZWZy7HM38PD3DmWWrv8HFoK" # Database password
-
     # default to SQLite
-    db_backend: str = "sqlite" #change to 'postgresql' for postgres database
+    db_backend: str = "postgresql" #change to 'postgresql' for postgres database
     
     #openai tags
     tags = [

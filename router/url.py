@@ -12,6 +12,7 @@ from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from starlette.background import BackgroundTasks
 import os
+
 router = APIRouter(tags=["url"])
 
 
@@ -89,27 +90,6 @@ async def create_url_post(
     db.refresh(db_url)
     return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
 
-    
-    # base_url = URL(get_settings().base_url)
-    # db_url.url = str(base_url.replace(path=db_url.key))
-    
-    # #generare qr image
-    
-    # try:
-    #     #create qr image and save it temporarily
-    #     qr = crud.make_qrcode(url_key=db_url.key)
-
-    #     #save qr image path to db file
-    #     save_qr =db.query(model.URL).filter(model.URL.key == db_url.key)
-    #     if save_qr.first():
-    #         save_qr.update({"qr_url": qr})
-    #         db.commit()
-        
-    #     return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
-    
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail = f"Error: {str(e)}")
-
 #redirect clicks to destination
 @router.get("/{url_key}")
 async def forward_to_target_url(
@@ -124,7 +104,6 @@ async def forward_to_target_url(
         return RedirectResponse(db_url.target_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
     else:
         return templates.TemplateResponse("index.html", {"request": request})
-
 
 #CUSTOMIZE GET ROUTE
 @router.get("/customize/{url_key}", response_class=HTMLResponse)
