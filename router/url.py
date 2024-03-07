@@ -122,7 +122,7 @@ async def customise(
     
     url_key = db.query(model.URL).filter(model.URL.key == url_key).first()
     
-    return templates.TemplateResponse("customize.html", {"request": request, "user": user, 'url_key': url_key, "msg": msg})
+    return templates.TemplateResponse("Customize.html", {"request": request, "user": user, 'url_key': url_key, "msg": msg})
 
 
 #CUSTOMIZE PUT ROUTE
@@ -156,7 +156,7 @@ async def customize_url_post(
         msg.append("Custom name is taken")
         
         return templates.TemplateResponse(
-            "customize.html", 
+            "Customize.html", 
             {
                 "request": request, 
                 'url_key': url_key,
