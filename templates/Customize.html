@@ -1,5 +1,5 @@
 {% include 'layout.html' %} {% block title%}
-<title>Customize | Ez-scissor</title>
+<title>Customize|Ez-scissor</title>
 {% endblock%}
 
 <div class="container">
@@ -8,16 +8,17 @@
     <div class="card-body">
         <h2>Customize Url</h2>
     </div>
-    <div class="card-body">
-        
-    </div>
+    
+    <div class="card-body"></div>
 
     <div class="container">
-        {% if msg %} {% if msg == 'Updated successfully' %}
+        {% if msg == [] %}
+        <div class="alert alert-success" role="alert">{{ "create magic" }}</div>
+        {% elif msg ==  'Updated successfully' %}
         <div class="alert alert-success" role="alert">{{ msg }}</div>
         {% else %}
         <div class="alert alert-danger" role="alert">{{ msg }}</div>
-        {% endif %} {% endif %}
+        {% endif %}
 
         <div class="card">
             <div class="card-header">

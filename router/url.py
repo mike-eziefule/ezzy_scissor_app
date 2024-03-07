@@ -122,7 +122,7 @@ async def customise(
     
     url_key = db.query(model.URL).filter(model.URL.key == url_key).first()
     
-    return templates.TemplateResponse("customize.html", {"request": request, "user": user, 'url_key': url_key})
+    return templates.TemplateResponse("customize.html", {"request": request, "user": user, 'url_key': url_key, "msg": msg})
 
 
 #CUSTOMIZE PUT ROUTE
@@ -172,50 +172,6 @@ async def customize_url_post(
     db.commit()
     db.refresh(scan_key)
     return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
-
-
-# #DOWNLOAD QR-CODE ROUTE
-# @router.get("/download/{url_key}")
-# async def download_qr(
-#     background_tasks: BackgroundTasks,
-#     request: Request,
-#     url_key:str, 
-#     db:Session=Depends(database.get_db)
-#     ):
-    
-#     """download qrcode for website."""
-#     msg = []
-    
-#     # authentication
-#     user = service.get_user_from_token(request, db)
-#     if user is None:
-#         msg.append("session expired, kindly Login again")
-#         return templates.TemplateResponse("login.html", {'request':Request, 'msg':msg}, status_code=status.HTTP_403_FORBIDDEN)
-    
-#     db_url = crud.get_url_by_key(url_key, db)
-#     if not db_url:
-#         # msg.append("URL does not exist")
-#         return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
-    
-    
-#     #generare qr image
-    
-#     # try:
-    
-#     #create qr image and save it temporarily
-#     qr = crud.make_qrcode(url_key = db_url.key) 
-    
-#     #remove temporary QR image file after download 
-#     background_tasks.add_task(remove_file, qr)
-        
-#     return FileResponse(
-#             filename = db_url.key+".png",
-#             path = get_settings().base_url+qr,
-#             media_type="image/png",
-#             content_disposition_type= "attachment",
-#         )    
-    # except Exception as e:
-    #     return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
 
 
 #delete entry routes
