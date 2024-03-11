@@ -8,7 +8,7 @@ from fastapi import Depends
 
 from config.config import get_settings
 
-if get_settings().db_backend == "postgresql":
+if get_settings().app_server == "development":
     engine = create_engine(
         get_settings().db_url,
         pool_size=3,

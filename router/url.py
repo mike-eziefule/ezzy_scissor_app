@@ -11,18 +11,17 @@ from config.config import get_settings
 from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from starlette.background import BackgroundTasks
-import os
+from utils.rate_limit import rate_limited
 
 router = APIRouter(tags=["url"])
 
 
 templates = Jinja2Templates(directory="templates")
 
-def remove_file(path: str) -> None:
-    os.unlink(path)
     
 #VIEW URL BY KEY
 @router.get("/", response_class = HTMLResponse)
+@rate_limited(max_calls=3, time_frame=60)
 async def homepage(
     request:Request,
 ):
@@ -30,6 +29,7 @@ async def homepage(
 
 #create_url GET ROUTE
 @router.get("/create_url", response_class=HTMLResponse)
+@rate_limited(max_calls=3, time_frame=60)
 async def create_url(
     request: Request,
     db:Session=Depends(database.get_db)
@@ -51,6 +51,7 @@ async def create_url(
     
 #create_url POST ROUTE
 @router.post("/create_url", response_class=HTMLResponse)
+@rate_limited(max_calls=3, time_frame=60)
 async def create_url_post(
     request: Request,
     target_url: str = Form(...),
@@ -92,6 +93,7 @@ async def create_url_post(
 
 #redirect clicks to destination
 @router.get("/{url_key}")
+@rate_limited(max_calls=3, time_frame=60)
 async def forward_to_target_url(
     url_key: str, 
     request: Request, 
@@ -107,6 +109,7 @@ async def forward_to_target_url(
 
 #CUSTOMIZE GET ROUTE
 @router.get("/customize/{url_key}", response_class=HTMLResponse)
+@rate_limited(max_calls=3, time_frame=60)
 async def customise(
     request: Request, 
     url_key:str, 
@@ -127,6 +130,7 @@ async def customise(
 
 #CUSTOMIZE PUT ROUTE
 @router.post("/customize/{url_key}", response_class=HTMLResponse)
+@rate_limited(max_calls=3, time_frame=60)
 async def customize_url_post(
     request: Request,
     url_key:str, 
@@ -176,6 +180,7 @@ async def customize_url_post(
 
 #delete entry routes
 @router.get("/delete/{url_key}", response_class=HTMLResponse)
+@rate_limited(max_calls=2, time_frame=60)
 async def delete_url(
     request:Request, 
     url_key: str, 

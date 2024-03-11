@@ -7,6 +7,7 @@ from storage import database, model
 from utils.service import bcrpyt_context
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from utils.rate_limit import rate_limited
 
 
 router = APIRouter(prefix="/user", tags=["user"])
@@ -16,6 +17,7 @@ templates = Jinja2Templates(directory="templates")
 
 #register page route
 @router.get("/sign-up", response_class=HTMLResponse)
+@rate_limited(max_calls=3, time_frame=60)
 async def register(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 

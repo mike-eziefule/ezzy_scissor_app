@@ -14,7 +14,7 @@ from schema import user, url
 from datetime import timedelta
 from storage.database import db_session
 from utils import service
-
+from utils.rate_limit import rate_limited
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
@@ -43,14 +43,14 @@ async def login_for_access_token(
 
 #login get page route
 @router.get("/login", response_class=HTMLResponse)
-async def authenticationpage(
-    request: Request,
-    ):
+@rate_limited(max_calls=3, time_frame=60)
+async def authenticationpage(request: Request):
     
     return templates.TemplateResponse("login.html", {"request": request})
 
 #login post page route
 @router.post("/login", response_class=HTMLResponse)
+@rate_limited(max_calls=2, time_frame=60)
 async def login(
     request:Request, 
     db:Session=Depends(database.get_db)

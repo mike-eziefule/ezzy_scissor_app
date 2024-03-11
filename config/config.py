@@ -9,7 +9,7 @@ class Settings():
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # default to SQLite
-    db_backend: str = "postgresql" #change to 'postgresql' for postgres database
+    app_server: str = "development" #change to 'development' for postgres database
     
     #openai tags
     tags = [
@@ -39,7 +39,7 @@ class Settings():
 def get_settings() -> Settings:
     """Return the current settings."""
     settings = Settings()
-    if settings.db_backend == "postgresql":
+    if settings.app_server == "development":
         settings.db_url = "postgresql://ofqcobrn:zGAxW-IDKlJg4F2sYwCv-NfYZpYDV3ag@ruby.db.elephantsql.com/ofqcobrn"
         settings.base_url = "https://ez-ly.onrender.com/"
 
