@@ -42,5 +42,4 @@ def get_settings() -> Settings:
     if settings.app_server == "development":
         settings.db_url = "postgresql://ofqcobrn:zGAxW-IDKlJg4F2sYwCv-NfYZpYDV3ag@ruby.db.elephantsql.com/ofqcobrn"
         settings.base_url = "https://ez-ly.onrender.com/"
-
     return settings

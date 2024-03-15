@@ -21,11 +21,12 @@ templates = Jinja2Templates(directory="templates")
     
 #VIEW URL BY KEY
 @router.get("/", response_class = HTMLResponse)
-@rate_limited(max_calls=3, time_frame=60)
+@rate_limited(max_calls=5, time_frame=60)
 async def homepage(
     request:Request,
 ):
     return templates.TemplateResponse("index.html", {"request": request})
+
 
 #create_url GET ROUTE
 @router.get("/create_url", response_class=HTMLResponse)
@@ -43,15 +44,15 @@ async def create_url(
         msg.append("Session Expired, Login")
         return templates.TemplateResponse("login.html", {"request": request, "user": user})
     
-    
     return templates.TemplateResponse(
         "create_url.html", 
         {"request": request, "user": user}
     )
     
+    
 #create_url POST ROUTE
 @router.post("/create_url", response_class=HTMLResponse)
-@rate_limited(max_calls=3, time_frame=60)
+@rate_limited(max_calls=5, time_frame=60)
 async def create_url_post(
     request: Request,
     target_url: str = Form(...),
@@ -81,7 +82,6 @@ async def create_url_post(
                 "title": title
             }
         )
-    
     db_url = crud.create_and_save_url(
         db=db, 
         title=title, 
@@ -91,9 +91,9 @@ async def create_url_post(
     db.refresh(db_url)
     return RedirectResponse("/ezzy/dashboard", status_code=status.HTTP_302_FOUND)
 
+
 #redirect clicks to destination
 @router.get("/{url_key}")
-@rate_limited(max_calls=3, time_frame=60)
 async def forward_to_target_url(
     url_key: str, 
     request: Request, 
@@ -106,6 +106,8 @@ async def forward_to_target_url(
         return RedirectResponse(db_url.target_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT)
     else:
         return templates.TemplateResponse("index.html", {"request": request})
+
+
 
 #CUSTOMIZE GET ROUTE
 @router.get("/customize/{url_key}", response_class=HTMLResponse)
@@ -130,7 +132,7 @@ async def customise(
 
 #CUSTOMIZE PUT ROUTE
 @router.post("/customize/{url_key}", response_class=HTMLResponse)
-@rate_limited(max_calls=3, time_frame=60)
+@rate_limited(max_calls=5, time_frame=60)
 async def customize_url_post(
     request: Request,
     url_key:str, 
@@ -180,7 +182,7 @@ async def customize_url_post(
 
 #delete entry routes
 @router.get("/delete/{url_key}", response_class=HTMLResponse)
-@rate_limited(max_calls=2, time_frame=60)
+@rate_limited(max_calls=10, time_frame=60)
 async def delete_url(
     request:Request, 
     url_key: str, 
