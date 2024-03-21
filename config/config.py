@@ -9,7 +9,7 @@ class Settings():
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # default to SQLite
-    app_server: str = "development" #change to 'development' for postgres database
+    app_server: str = "development" #change to 'development' when hosting
     
     #openai tags
     tags = [

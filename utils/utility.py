@@ -1,5 +1,3 @@
-"""CRUD operations."""
-
 from config.config import get_settings
 from starlette.datastructures import URL
 from schema import url
@@ -9,28 +7,26 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 
 
-img_path = "static/images/qr_images/"
 base_url = URL(get_settings().base_url)
 
 
-
-def create_and_save_url(db, title, url, user_id) -> url.URL:
+# def create_and_save_url(db, title, url, user_id) -> url.URL:
     
-    """Create URL in the Database."""
-    #generate unique key
-    key = keygen.create_unique_random_key(db)
+#     """Create URL in the Database."""
+#     #generate unique key
+#     key = keygen.create_unique_random_key(db)
 
-    #database dump
-    db_url = model.URL(
-        title = title,
-        target_url= url,
-        key= key,
-        date_created = datetime.now().date(), 
-        owner_id = user_id
-    )
-    db.add(db_url)
-    db.commit()
-    return db_url
+#     #database dump
+#     db_url = model.URL(
+#         title = title,
+#         target_url= url,
+#         key= key,
+#         date_created = datetime.now().date(), 
+#         owner_id = user_id
+#     )
+#     db.add(db_url)
+#     db.commit()
+#     return db_url
 
 #function 2
 def get_url_by_key(url_key:str, db:Session) -> model.URL:

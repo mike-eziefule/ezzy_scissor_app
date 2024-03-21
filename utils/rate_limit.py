@@ -2,7 +2,7 @@ from functools import wraps
 import time
 from fastapi import HTTPException, Request, status
 
-def rate_limited(max_calls: int, time_frame:int):
+def rate_limiter(max_calls: int, time_frame:int):
     """
     max_call: the maximum number of calls allowed
     time_frame: the time frame(in seconds) for whch the limit applies

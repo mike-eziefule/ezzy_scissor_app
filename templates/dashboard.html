@@ -59,23 +59,12 @@
                     >
                         Customize URL
                     </button>
-                    <!--
-                    <button 
-                    onclick="window.location.href='/download/{{url.key}}'" 
-                    type="button" 
-                    class="btn btn-primary"
-                    >
-                        Download QR
-                    </button>
-                    -->
-
                     <button 
                     type="button" class="btn btn-primary">
                         <a href = "https://api.qrserver.com/v1/create-qr-code/?data={{base_url}}{{url.key}}&size=300x300" download="{{url.key}}.png" target=_blank class="btn-primary">
                             Show QR_Image
                         </a>
                     </button>
-
                     <button 
                     onclick="window.location.href='/delete/{{url.key}}'" 
                     type="button" 

@@ -13,6 +13,7 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
 def get_user_from_token(request: Request, db):
+    
     """
         Decode token, extract username/email, 
         then authenticate if user is in db, 
@@ -30,7 +31,7 @@ def get_user_from_token(request: Request, db):
         #Querry the sub(email) from to token against the stored email
         user = db.query(model.USER).filter(model.USER.email==username).first()        
         if user is None:
-            raise None
+            return None
         
         #if successful, return the user as authenticated, for further processing.
         return user

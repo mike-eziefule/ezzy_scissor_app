@@ -2,7 +2,7 @@
 import secrets
 import string
 from sqlalchemy.orm import Session
-from utils import crud
+from utils import utility
 
 
 #function 1
@@ -16,7 +16,7 @@ def create_random_key(length: int = 5) -> str:
 def create_unique_random_key(db:Session) -> str:
     """Create a guaranteed random key."""
     url_key = create_random_key()
-    while crud.get_url_by_key(url_key, db):
+    while utility.get_url_by_key(url_key, db):
         url_key = create_random_key()
     return url_key
 
