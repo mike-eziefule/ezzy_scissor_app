@@ -4,12 +4,12 @@ from functools import lru_cache
 class Settings():
     """Default BaseSettings."""
 
-    env_name: str = "development"
+    env_name: str = "local"
     base_url: str = "http://localhost:8000/"
     db_url: str = "sqlite:///./Ezzy_Url_Shortener.sqlite"
 
     # default to SQLite
-    app_server: str = "development" #change to 'development' when hosting
+    app_server: str = "local" #change to 'development' when hosting
     
     #openai tags
     tags = [

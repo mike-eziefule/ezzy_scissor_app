@@ -1,6 +1,4 @@
-{% include 'layout.html' %}
-
-{% block title%}
+{% include 'layout.html' %} {% block title%}
 <title>faq | Ez-scissor</title>
 {% endblock%}
 
@@ -48,12 +46,10 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem ipsum dolor sit amet consectetur, adipisicing
-                            elit. Deleniti impedit accusantium dignissimos et
-                            commodi libero natus neque voluptates earum?
-                            Laudantium, asperiores assumenda laboriosam dolor in
-                            molestias, vitae suscipit accusamus omnis quam
-                            ratione.
+                            Yes, Ez-Scissor provides free services like URL storage, 
+                            QR code generation, Domain customization, and analysis therefore
+                            users are required to create an account to enable access to a 
+                            dashboard where these services can be organized.
                         </h5>
                     </div>
                 </div>
@@ -68,10 +64,7 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem ipsum dolor sit, amet consectetur adipisicing
-                            elit. Quas accusamus vero repellendus sunt. Numquam
-                            minus magnam iure necessitatibus voluptas inventore
-                            ullam, ex voluptatibus corrupti?
+                            Shortened URLs are permanent except deleted by owner.
                         </h5>
                     </div>
                 </div>
@@ -87,8 +80,8 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Maxime placeat ea dolore omnis cumque ratione!
+                            In version 0.1.0, No limitations has been set however, users a restricted to
+                            10 shortening per minute.
                         </h5>
                     </div>
                 </div>
@@ -104,10 +97,7 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Quas accusantium consectetur consequuntur
-                            voluptatum laudantium itaque ducimus dignissimos
-                            provident quam iusto.
+                            Yes you can, create a free account and explore this possibilities.
                         </h5>
                     </div>
                 </div>
@@ -122,10 +112,8 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Magnam neque recusandae cupiditate rem
-                            laudantium delectus sunt, culpa distinctio iure
-                            quasi unde porro hic. Magnam, quia.
+                            Analytics for all created short links are available on the
+                            dashboard.
                         </h5>
                     </div>
                 </div>
@@ -142,12 +130,8 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                            elit. Nisi excepturi perferendis facilis
-                            reprehenderit mollitia voluptates expedita maiores.
-                            Natus deleniti unde, cupiditate possimus voluptate
-                            reprehenderit similique ex laboriosam odio at
-                            tempore?
+                            Shortened links can only be modified by registered user alone.
+                            Endevour to create a strong password for your account.
                         </h5>
                     </div>
                 </div>
@@ -160,10 +144,8 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Repudiandae distinctio veritatis molestiae
-                            repellendus aspernatur numquam voluptas officiis
-                            dolore.
+                            QR Code are images containing information of the qr link created.
+                            These images can be scanned and decodes by any qr scanner.
                         </h5>
                     </div>
                 </div>
@@ -180,8 +162,7 @@
                     </div>
                     <div class="plus_answer">
                         <h5>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
+                            None for now, this will be integrated in the future.
                         </h5>
                     </div>
                 </div>
@@ -190,12 +171,23 @@
     </div>
 </div>
 
-
 <div class="card-body"></div>
 <div class="whyscissors"></div>
 
 {% include 'footnote.html' %}
-
-<hr class="orb-divider"></hr>
-<hr class="orb-divider"></hr>
+<hr class="orb-divider" />
+<hr class="orb-divider" />
 <div class=""><h4>you've reached the end of this page</h4></div>
+
+<script>
+    let response = document.querySelectorAll(".plus");
+    response.forEach((event) => {
+        event.addEventListener("click", () => {
+            if (event.classList.contains("active")) {
+                event.classList.remove("active");
+            } else {
+                event.classList.add("active");
+            }
+        });
+    });
+</script>
