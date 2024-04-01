@@ -45,40 +45,38 @@
                     </div>
                 </div>
             </div>
-            <hr class="orb-divider"></hr>
-            
-            <div class="">
-                <div class="column">
-                    <button
-                    onclick="window.location.href='/customize/{{url.key}}'"
-                    type="button"
-                    class="btn btn-success"
-                    >
-                        Customize URL
-                    </button>
-                    <button 
-                    type="button" class="btn btn-primary">
-                        <a href = "https://api.qrserver.com/v1/create-qr-code/?data={{base_url}}{{url.key}}&size=300x300" download="{{url.key}}.png" target=_blank class="btn-primary">
-                            Show QR_Image
-                        </a>
-                    </button>
-                    <button 
-                    onclick="window.location.href='/delete/{{url.key}}'" 
-                    type="button" 
-                    class="btn btn-danger"
-                    >
-                        Delete URL   
-                    </button>
-                </div>
+            <div class="btn col">
+                <button
+                onclick="window.location.href='/customize/{{url.key}}'"
+                type="button"
+                class="btn btn-success"
+                >
+                    Customize URL
+                </button>
+                <button 
+                type="button" class="btn btn-primary">
+                    <a href = "https://api.qrserver.com/v1/create-qr-code/?data={{base_url}}{{url.key}}&size=300x300" download="{{url.key}}.png" target=_blank class="btn-primary">
+                        Show QR_Image
+                    </a>
+                </button>
+                <button 
+                onclick="window.location.href='/delete/{{url.key}}'" 
+                type="button" 
+                class="btn btn-danger"
+                >
+                    Delete URL   
+                </button>
             </div>
             <hr class="orb-divider"></hr>
+            
+            <hr class="orb-divider">
             {% endfor %}
         </div>
     </div>
 
     <div class="card-body"></div>
-    <hr class="orb-divider"></hr>
-    <hr class="orb-divider"></hr>
+    <hr class="orb-divider"/>
+    <hr class="orb-divider">
     <div class=""><h4>you've reached the end of this page</h4></div>
     
 </div>
